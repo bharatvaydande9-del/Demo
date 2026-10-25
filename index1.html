@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Webpage Demo</title>
+<style>
+  :root { --pink:#d96f9a; --deep:#593d4b; --muted:#7a6270; --paper:rgba(255,255,255,.86); }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; min-height:100vh; padding:24px 16px; display:grid; place-items:center;
+    font-family:"Segoe UI",Arial,sans-serif; color:var(--deep);
+    background:linear-gradient(135deg,#fff8fb,#ffe3ef,#f7e9ff);
+    background-size:180% 180%; animation:bg 12s ease infinite;
+    overflow-x:hidden;
+  }
+  .sparkle { position:fixed; pointer-events:none; opacity:.65; animation:drift 8s ease-in-out infinite; }
+  .wrap { width:min(100%,470px); position:relative; z-index:1; }
+  .card {
+    text-align:center; padding:32px 25px 25px; border:1px solid #fff;
+    border-radius:28px; background:var(--paper); backdrop-filter:blur(10px);
+    box-shadow:0 20px 60px rgba(170,94,129,.16);
+  }
+  .tag { display:inline-block; padding:7px 12px; border-radius:99px; background:#fff0f6; color:#b45d84; font-size:11px; letter-spacing:1.4px; font-weight:800; }
+  .flower { font-size:46px; margin:20px 0 8px; animation:float 2.8s ease-in-out infinite; }
+  h1 { font-size:clamp(28px,7vw,37px); line-height:1.12; margin:7px 0 12px; }
+  .lead { line-height:1.7; font-size:15px; color:var(--muted); margin:0 auto 18px; max-width:350px; }
+  .rule { width:54px; height:3px; background:#f0b2ce; border-radius:10px; margin:20px auto; }
+  .mini-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:20px 0; }
+  .mini { background:#fff5f9; border:1px solid #ffe2ed; border-radius:15px; padding:13px 5px; font-size:12px; color:#98647b; }
+  .mini span { display:block; font-size:22px; margin-bottom:6px; }
+  .actions { display:flex; flex-wrap:wrap; justify-content:center; gap:9px; }
+  button { border:0; border-radius:999px; padding:12px 17px; font-size:14px; font-weight:700; cursor:pointer; transition:transform .18s,box-shadow .18s; }
+  button:hover { transform:translateY(-2px); }
+  .primary { background:var(--pink); color:white; box-shadow:0 7px 18px #d96f9a40; }
+  .secondary { background:#fff0f6; color:#a34f76; border:1px solid #f7d4e3; }
+  #message { min-height:42px; margin-top:16px; line-height:1.5; color:#b14d7c; font-weight:650; }
+  .note { display:none; margin-top:10px; padding:13px; border-radius:15px; background:#fff5f9; color:#80586c; font-size:14px; line-height:1.6; }
+  .note.show { display:block; animation:appear .35s ease; }
+  .footer { font-size:11px; color:#b39aa7; margin-top:22px; }
+  .tiny { margin-top:13px; font-size:11px; color:#b39aa7; }
+  @keyframes float { 0%,100% { transform:translateY(0) rotate(-4deg); } 50% { transform:translateY(-8px) rotate(4deg); } }
+  @keyframes bg { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+  @keyframes drift { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-18px) rotate(10deg); } }
+  @keyframes appear { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  @media(max-width:380px) { .card { padding:27px 17px 22px; } .mini { font-size:11px; } }
+  @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+</style>
+</head>
+<body>
+  <span class="sparkle" style="left:8%;top:15%;font-size:22px">✦</span>
+  <span class="sparkle" style="right:9%;top:22%;font-size:18px;animation-delay:-3s">♡</span>
+  <span class="sparkle" style="left:12%;bottom:14%;font-size:19px;animation-delay:-5s">✧</span>
+  <span class="sparkle" style="right:12%;bottom:12%;font-size:23px;animation-delay:-2s">✿</span>
+  <main class="wrap">
+    <section class="card">
+      <div class="tag">A SMALL PRACTICE PROJECT</div>
+      <div class="flower" aria-hidden="true">🌷</div>
+      <h1>A little something<br>made with code ✨</h1>
+      <p class="lead">I'm learning how to build webpages, so I tried making this tiny page with soft colours, a little motion, and a few interactive bits.</p>
+      <div class="rule"></div>
+      <div class="mini-grid">
+        <div class="mini"><span>🎨</span>Colours</div>
+        <div class="mini"><span>✨</span>Animation</div>
+        <div class="mini"><span>💗</span>Buttons</div>
+      </div>
+      <div class="actions">
+        <button class="primary" onclick="showSurprise()">Tap for a tiny surprise 💗</button>
+        <button class="secondary" onclick="toggleNote()">What's this?</button>
+      </div>
+      <div id="message" aria-live="polite"></div>
+      <div id="note" class="note">This is only a little practice demo to show what I'm learning. The real project is still a work in progress 😉</div>
+      <div class="footer">Made with HTML, CSS & a little JavaScript</div>
+      <div class="tiny">Demo version · More ideas coming soon</div>
+    </section>
+  </main>
+<script>
+function showSurprise() {
+  document.getElementById('message').textContent = 'A tiny reminder: little things can still make someone smile 🌸';
+  const symbols = ['💗','✨','🌸','♡','✿'];
+  for (let i=0; i<24; i++) {
+    const item = document.createElement('span');
+    item.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    item.style.position = 'fixed';
+    item.style.left = (5 + Math.random()*90) + 'vw';
+    item.style.top = (55 + Math.random()*35) + 'vh';
+    item.style.fontSize = (14 + Math.random()*19) + 'px';
+    item.style.zIndex = '5'; item.style.pointerEvents = 'none';
+    item.style.transition = 'transform 1.5s ease, opacity 1.5s ease';
+    document.body.appendChild(item);
+    requestAnimationFrame(() => {
+      item.style.transform = `translateY(-${100+Math.random()*180}px) rotate(${Math.random()*100-50}deg)`;
+      item.style.opacity = '0';
+    });
+    setTimeout(() => item.remove(), 1600);
+  }
+}
+function toggleNote() {
+  const note = document.getElementById('note');
+  note.classList.toggle('show');
+  document.getElementById('message').textContent = note.classList.contains('show') ? 'A little peek behind the scenes 👀' : '';
+}
+</script>
+</body>
+</html>
